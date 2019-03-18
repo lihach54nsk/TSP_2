@@ -16,11 +16,11 @@ namespace TSP_2
         public Form1() => InitializeComponent();
 
         private void Start_Button_Click(object sender, EventArgs e)
-        {            
+        {
             int mean = 0;
 
             for (int i = 0; i < Convert.ToInt32(NumberOFExperimentsTextBox.Text); i++)
-            {                
+            {
                 var result = new Simulation().Simulate(Convert.ToDouble(lyambdaTextBox.Text), Convert.ToDouble(timeTextBox.Text));
 
                 var a = result.GetEnumerator();
