@@ -16,17 +16,31 @@ namespace TSP_2
         public Form1() => InitializeComponent();
 
         private void Start_Button_Click(object sender, EventArgs e)
+        {            
+            int mean = 0;
+
+            for (int i = 0; i < Convert.ToInt32(NumberOFExperimentsTextBox.Text); i++)
+            {                
+                var result = new Simulation().Simulate(Convert.ToDouble(lyambdaTextBox.Text), Convert.ToDouble(timeTextBox.Text));
+
+                var a = result.GetEnumerator();
+                mean += result.Count;
+
+                for (int j = 0; j < result.Count; j++)
+                {
+                    chart1.Series[0].Points.AddXY(a.Current.time, Convert.ToDouble(a.Current.N)); // делать по одному или возрастающий график не принципиален (так удобнее воспринимать)?
+                    TimeNRichTextBox.AppendText($"{a.Current.time.ToString()} - {a.Current.N.ToString()}\n");
+                    a.MoveNext();
+                }
+            }
+            MeanTextBox.Text = (mean / Convert.ToDouble(NumberOFExperimentsTextBox.Text)).ToString();
+        }
+
+        private void ClearButton_Click(object sender, EventArgs e)
         {
             chart1.Series[0].Points.Clear();
-            var result = new Simulation().Simulate(Convert.ToDouble(lyambdaTextBox.Text), Convert.ToDouble(timeTextBox.Text));
-
-            var a = result.GetEnumerator();
-
-            for (int i = 0; i < result.Count; i++)
-            {
-                chart1.Series[0].Points.AddXY(a.Current.time, Convert.ToDouble(a.Current.N));
-                a.MoveNext();
-            }
+            TimeNRichTextBox.Clear();
+            MeanTextBox.Clear();
         }
     }
 }
